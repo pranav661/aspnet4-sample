@@ -4,11 +4,17 @@
 
 #Or this task can be done by using replace tokens plugins from marketplace which is third party sw.
 
-cd "$(System.ArtifactsDirectory)\$(build.definitionname)"
+
+param (
+ [string]$loc
+
+)
+
+cd "$loc"
 dir                                              
                                              
 
-$loc = pwd
+
 
 mkdir temp
 
