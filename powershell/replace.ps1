@@ -1,7 +1,48 @@
-echo "Starting to replace the tokens in Web.config file"
+#powershell version must be 5.1
+#This script will work only for projects have only 1 web.config file
+#If we want it to work for more web.config files, changes in the logic need to be done.
 
-$configLoc = "$(Build.SourcesDirectory)\aspnet4-sample\Web.config"
-$config_with_valuesLoc = "$(Build.SourcesDirectory)\powershell\config_with_values.config"
+#Or this task can be done by using replace tokens plugins from marketplace which is third party sw.
+
+cd "$(System.ArtifactsDirectory)\$(build.definitionname)"
+dir                                              
+                                             
+
+$loc = pwd
+
+mkdir temp
+
+cd temp  
+
+$temploc = pwd
+
+echo "$temploc"
+                                
+$ziploc = Get-ChildItem $loc -Filter *.zip -Recurse | % { $_.FullName } | Out-String
+
+$ziploc = $ziploc.Trim()
+
+expand-archive -path $ziploc -destinationpath $temploc
+
+$configLoc = Get-ChildItem $temploc -Filter Web.config -Recurse | % { $_.FullName } | Out-String
+
+$configLoc = ($configLoc -split '\r?\n')[0]
+
+$configLoc = $configLoc.Trim()
+
+echo "$configLoc"
+
+$content = Get-Content $configLoc
+echo "$content"
+
+## getting config with values location
+## right now only hard coded and that also for dev envt
+## serious work has to be done
+
+
+$config_with_valuesLoc = Get-ChildItem $loc -Filter dev_web.config -Recurse | % { $_.FullName } | Out-String
+$config_with_valuesLoc = $config_with_valuesLoc.Trim()
+echo "$config_with_valuesLoc"
 
 $tokens = (Get-Content $configLoc | select-string -pattern "{.*?}").length
 
@@ -41,6 +82,13 @@ $line = ($lines -split '\r?\n')[$i]
 #echo "$line"
 getproperty -holder $line
 }
+
+$content = Get-Content $configLoc
+echo "$content"
+
+#removing old zip file
+rm $ziploc
+
 
 
 
