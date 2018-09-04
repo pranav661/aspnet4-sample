@@ -4,39 +4,27 @@
 
 #Or this task can be done by using replace tokens plugins from marketplace which is third party sw.
 
-
 param (
  [string]$loc
-
 )
 
 cd "$loc"
 dir                                              
                                              
-
-
-
 mkdir temp
 
 cd temp  
 
 $temploc = pwd
-
-echo "$temploc"
-                                
+                               
 $ziploc = Get-ChildItem $loc -Filter *.zip -Recurse | % { $_.FullName } | Out-String
-
 $ziploc = $ziploc.Trim()
 
 expand-archive -path $ziploc -destinationpath $temploc
 
 $configLoc = Get-ChildItem $temploc -Filter Web.config -Recurse | % { $_.FullName } | Out-String
-
 $configLoc = ($configLoc -split '\r?\n')[0]
-
 $configLoc = $configLoc.Trim()
-
-echo "$configLoc"
 
 $content = Get-Content $configLoc
 echo "$content"
@@ -66,7 +54,6 @@ $original | % { $_.Replace("$holder", "$value") } | Set-Content $configLoc
 function getvalue {
 Param($prop,$holder)
 $value = Get-Content $config_with_valuesLoc | findstr $prop | Out-String | ForEach-Object { $_.Trim() }
-echo "$value"
 replacing -holder $holder -value $value
 }
 
@@ -76,11 +63,8 @@ Param($holder)
 $property = $holder.split(" ")[1]
 $property = $property.split("=")[1]
 $property = $property.Trim()
-echo "$property"
-
 getvalue -prop $property -holder $holder
 }
-
 
 For ($i=0; $i -lt $tokens; $i++)
 {
@@ -89,12 +73,5 @@ $line = ($lines -split '\r?\n')[$i]
 getproperty -holder $line
 }
 
-$content = Get-Content $configLoc
-echo "$content"
-
 #removing old zip file
 rm $ziploc
-
-
-
-
