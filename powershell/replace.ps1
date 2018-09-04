@@ -5,7 +5,8 @@
 #Or this task can be done by using replace tokens plugins from marketplace which is third party sw.
 
 param (
- [string]$loc
+ [string]$loc,
+ [string]$envt
 )
 
 cd "$loc"
@@ -29,14 +30,15 @@ $configLoc = $configLoc.Trim()
 $content = Get-Content $configLoc
 echo "$content"
 
-## getting config with values location
-## right now only hard coded and that also for dev envt
-## serious work has to be done
-
-
-$config_with_valuesLoc = Get-ChildItem $loc -Filter dev_web.config -Recurse | % { $_.FullName } | Out-String
-$config_with_valuesLoc = $config_with_valuesLoc.Trim()
-echo "$config_with_valuesLoc"
+## getting config with values location according to environment
+if($envt -contains "Dev")
+{
+$config_with_valuesLoc = "$loc/Package/powershell/dev_web.config"
+}
+if($envt -contains "QA")
+{
+$config_with_valuesLoc = "$loc/Package/powershell/qa_web.config"
+}
 
 $tokens = (Get-Content $configLoc | select-string -pattern "{.*?}").length
 
