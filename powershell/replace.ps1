@@ -2,8 +2,6 @@
 #This script will work only for projects have only 1 web.config file
 #If we want it to work for more web.config files, changes in the logic need to be done.
 
-#Or this task can be done by using replace tokens plugins from marketplace which is third party sw.
-
 param (
  [string]$loc,
  [string]$envt
