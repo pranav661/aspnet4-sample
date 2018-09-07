@@ -11,7 +11,6 @@ cd "$loc"
 dir                                              
                                              
 mkdir temp
-
 cd temp  
 
 $temploc = pwd
@@ -62,13 +61,11 @@ $original = Get-Content $configLoc
 $original | % { $_.Replace("$holder", "$value") } | Set-Content $configLoc
 }
 
-
 function getvalue {
 Param($prop,$holder)
 $value = Get-Content $config_with_valuesLoc | findstr $prop | Out-String | ForEach-Object { $_.Trim() }
 replacing -holder $holder -value $value
 }
-
 
 function getproperty {
 Param($holder)
