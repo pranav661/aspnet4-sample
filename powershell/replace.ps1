@@ -35,8 +35,12 @@ $Response = Invoke-WebRequest -Uri "$uri" -UseBasicParsing
 $objects = $Response.Content
 echo "$objects"
 Out-File -FilePath "$loc\conf-with-val.config" -InputObject $objects
+cd "$loc"
+dir
 $config_with_valuesLoc = "$loc\conf-with-val.config"
 echo "$config_with_valuesLoc"
+$a = Get-Content conf-with-val.config
+echo "$a"
 }
 
 ## getting config with values location according to environment
