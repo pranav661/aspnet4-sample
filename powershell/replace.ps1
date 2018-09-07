@@ -19,6 +19,7 @@ $temploc = pwd
 $ziploc = Get-ChildItem $loc -Filter *.zip -Recurse | % { $_.FullName } | Out-String
 $ziploc = $ziploc.Trim()
 
+#extracting the default zip file
 expand-archive -path $ziploc -destinationpath $temploc
 
 $configLoc = Get-ChildItem $temploc -Filter Web.config -Recurse | % { $_.FullName } | Out-String
@@ -28,14 +29,27 @@ $configLoc = $configLoc.Trim()
 $content = Get-Content $configLoc
 echo "$content"
 
+function getlocation {
+Param($uri)
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$Response = Invoke-WebRequest -Uri "$uri" -UseBasicParsing
+$objects = $Response.Content
+Out-File -FilePath "$loc\conf-with-val.config" -InputObject $objects
+$config_with_valuesLoc = "$loc\conf-with-val.config"
+}
+
 ## getting config with values location according to environment
 if($envt -contains "Dev")
 {
-$config_with_valuesLoc = "$loc/Package/powershell/dev_web.config"
+$uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/powershell/dev_web.config"
+getlocation -uri $uri
+#$config_with_valuesLoc = "$loc/Package/powershell/dev_web.config"
 }
 if($envt -contains "QA")
 {
-$config_with_valuesLoc = "$loc/Package/powershell/qa_web.config"
+$uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/powershell/qa_web.config"
+#$config_with_valuesLoc = "$loc/Package/powershell/qa_web.config"
+getlocation -uri $uri
 }
 
 $tokens = (Get-Content $configLoc | select-string -pattern "{.*?}").length
