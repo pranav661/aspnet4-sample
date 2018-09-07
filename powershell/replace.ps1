@@ -43,12 +43,10 @@ if($envt -contains "Dev")
 {
 $uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/powershell/dev_web.config"
 getlocation -uri $uri
-#$config_with_valuesLoc = "$loc/Package/powershell/dev_web.config"
 }
 if($envt -contains "QA")
 {
 $uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/powershell/qa_web.config"
-#$config_with_valuesLoc = "$loc/Package/powershell/qa_web.config"
 getlocation -uri $uri
 }
 
