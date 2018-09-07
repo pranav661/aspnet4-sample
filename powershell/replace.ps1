@@ -87,3 +87,6 @@ getproperty -holder $line
 
 #removing old zip file
 rm $ziploc
+
+#removing config file with values
+rm $config_with_valuesLoc
