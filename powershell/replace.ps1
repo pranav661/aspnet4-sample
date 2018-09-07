@@ -41,12 +41,12 @@ $config_with_valuesLoc = "$loc\conf-with-val.config"
 ## getting config with values location according to environment
 if($envt -contains "Dev")
 {
-$uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/powershell/dev_web.config"
+$uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/config-with-values/dev_web.config"
 getlocation -uri $uri
 }
 if($envt -contains "QA")
 {
-$uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/powershell/qa_web.config"
+$uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/config-with-values/qa_web.config"
 getlocation -uri $uri
 }
 
