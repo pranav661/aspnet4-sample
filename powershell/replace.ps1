@@ -33,8 +33,10 @@ Param($uri)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $Response = Invoke-WebRequest -Uri "$uri" -UseBasicParsing
 $objects = $Response.Content
+echo "$objects"
 Out-File -FilePath "$loc\conf-with-val.config" -InputObject $objects
 $config_with_valuesLoc = "$loc\conf-with-val.config"
+echo "$config_with_valuesLoc"
 }
 
 ## getting config with values location according to environment
