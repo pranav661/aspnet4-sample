@@ -37,10 +37,9 @@ echo "$objects"
 Out-File -FilePath "$loc\conf-with-val.config" -InputObject $objects
 cd "$loc"
 dir
-$config_with_valuesLoc = "$loc/conf-with-val.config"
+$config_with_valuesLoc = Get-ChildItem $loc -Filter conf-with-val.config -Recurse | % { $_.FullName } | Out-String
+$config_with_valuesLoc = $config_with_valuesLoc.Trim()
 echo "$config_with_valuesLoc"
-$a = Get-Content conf-with-val.config
-echo "$a"
 }
 
 ## getting config with values location according to environment
