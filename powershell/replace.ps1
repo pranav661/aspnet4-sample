@@ -40,18 +40,19 @@ dir
 $config_with_valuesLoc = Get-ChildItem $loc -Filter conf-with-val.config -Recurse | % { $_.FullName } | Out-String
 $config_with_valuesLoc = $config_with_valuesLoc.Trim()
 echo "$config_with_valuesLoc"
+return "$config_with_valuesLoc"
 }
 
 ## getting config with values location according to environment
 if($envt -contains "Dev")
 {
 $uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/config-with-values/dev_web.config"
-getlocation -uri $uri
+$config_with_valuesLoc = getlocation -uri $uri
 }
 if($envt -contains "QA")
 {
 $uri = "https://raw.githubusercontent.com/pranav661/aspnet4-sample/master/config-with-values/qa_web.config"
-getlocation -uri $uri
+$config_with_valuesLoc = getlocation -uri $uri
 }
 
 $tokens = (Get-Content $configLoc | select-string -pattern "{.*?}").length
@@ -68,6 +69,7 @@ $original | % { $_.Replace("$holder", "$value") } | Set-Content $configLoc
 
 function getvalue {
 Param($prop,$holder)
+echo "$config_with_valuesLoc"
 $value = Get-Content $config_with_valuesLoc | findstr $prop | Out-String | ForEach-Object { $_.Trim() }
 replacing -holder $holder -value $value
 }
