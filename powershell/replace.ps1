@@ -34,13 +34,17 @@ Param($uri)
 $Response = Invoke-WebRequest -Uri "$uri" -UseBasicParsing
 $objects = $Response.Content
 echo "$objects"
-Out-File -FilePath "$loc\conf-with-val.config" -InputObject $objects
-cd "$loc"
-dir
-$config_with_valuesLoc = Get-ChildItem $loc -Filter conf-with-val.config -Recurse | % { $_.FullName } | Out-String
-$config_with_valuesLoc = $config_with_valuesLoc.Trim()
-echo "$config_with_valuesLoc"
-return "$config_with_valuesLoc"
+
+
+#Out-File -FilePath "$loc\conf-with-val.config" -InputObject $objects
+#cd "$loc"
+#dir
+#$config_with_valuesLoc = Get-ChildItem $loc -Filter conf-with-val.config -Recurse | % { $_.FullName } | Out-String
+#$config_with_valuesLoc = $config_with_valuesLoc.Trim()
+#echo "$config_with_valuesLoc"
+
+
+return "$objects"
 }
 
 ## getting config with values location according to environment
@@ -70,7 +74,7 @@ $original | % { $_.Replace("$holder", "$value") } | Set-Content $configLoc
 function getvalue {
 Param($prop,$holder)
 echo "$config_with_valuesLoc"
-$value = Get-Content $config_with_valuesLoc | findstr $prop | Out-String | ForEach-Object { $_.Trim() }
+$value = $config_with_valuesLoc | findstr $prop | Out-String | ForEach-Object { $_.Trim() }
 replacing -holder $holder -value $value
 }
 
