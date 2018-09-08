@@ -97,4 +97,4 @@ getproperty -holder $line
 rm $ziploc
 
 #removing config file with values
-rm $config_with_valuesLoc
+#rm $config_with_valuesLoc
