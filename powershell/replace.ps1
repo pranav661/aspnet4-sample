@@ -25,25 +25,12 @@ $configLoc = Get-ChildItem $temploc -Filter Web.config -Recurse | % { $_.FullNam
 $configLoc = ($configLoc -split '\r?\n')[0]
 $configLoc = $configLoc.Trim()
 
-$content = Get-Content $configLoc
-echo "$content"
 
 function getlocation {
 Param($uri)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $Response = Invoke-WebRequest -Uri "$uri" -UseBasicParsing
 $objects = $Response.Content
-echo "$objects"
-
-
-#Out-File -FilePath "$loc\conf-with-val.config" -InputObject $objects
-#cd "$loc"
-#dir
-#$config_with_valuesLoc = Get-ChildItem $loc -Filter conf-with-val.config -Recurse | % { $_.FullName } | Out-String
-#$config_with_valuesLoc = $config_with_valuesLoc.Trim()
-#echo "$config_with_valuesLoc"
-
-
 return "$objects"
 }
 
@@ -95,6 +82,3 @@ getproperty -holder $line
 
 #removing old zip file
 rm $ziploc
-
-#removing config file with values
-#rm $config_with_valuesLoc
